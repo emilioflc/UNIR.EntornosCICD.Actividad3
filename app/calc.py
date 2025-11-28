@@ -1,3 +1,4 @@
+import math
 import app
 
 
@@ -32,9 +33,23 @@ class Calculator:
         self.check_types(x, y)
         return x ** y
 
+    def sqrt(self, x):
+        if not isinstance(x, (int, float)):
+            raise TypeError("No es un número")
+        if x < 0:
+            raise TypeError("No se puede calcular la raíz cuadrada de un número negativo")
+        return math.sqrt(x)
+
+    def log10(self, x):
+        if not isinstance(x, (int, float)):
+            raise TypeError("No es un número")
+        if x <= 0:
+            raise TypeError("No se puede calcular el logaritmo de un número negativo o cero")
+        return math.log10(x)
+
     def check_types(self, x, y):
         if not isinstance(x, (int, float)) or not isinstance(y, (int, float)):
-            raise TypeError("Parameters must be numbers")
+            raise TypeError("No es un número")
 
 
 if __name__ == "__main__":  # pragma: no cover

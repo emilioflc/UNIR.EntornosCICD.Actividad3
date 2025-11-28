@@ -21,3 +21,132 @@ class TestApi(unittest.TestCase):
         self.assertEqual(
             response.status, http.client.OK, f"Error en la petición API a {url}"
         )
+        self.assertEqual(
+            response.read().decode(), "4", f"Resultado incorrecto en {url}"
+        )
+
+    def test_api_substract(self):
+        url = f"{BASE_URL}/calc/substract/5/3"
+        response = urlopen(url, timeout=DEFAULT_TIMEOUT)
+        self.assertEqual(
+            response.status, http.client.OK, f"Error en la petición API a {url}"
+        )
+        self.assertEqual(
+            response.read().decode(), "2", f"Resultado incorrecto en {url}"
+        )
+
+    def test_api_multiply(self):
+        url = f"{BASE_URL}/calc/multiply/3/4"
+        response = urlopen(url, timeout=DEFAULT_TIMEOUT)
+        self.assertEqual(
+            response.status, http.client.OK, f"Error en la petición API a {url}"
+        )
+        self.assertEqual(
+            response.read().decode(), "12", f"Resultado incorrecto en {url}"
+        )
+
+    def test_api_divide(self):
+        url = f"{BASE_URL}/calc/divide/10/2"
+        response = urlopen(url, timeout=DEFAULT_TIMEOUT)
+        self.assertEqual(
+            response.status, http.client.OK, f"Error en la petición API a {url}"
+        )
+        self.assertEqual(
+            response.read().decode(), "5.0", f"Resultado incorrecto en {url}"
+        )
+
+    def test_api_divide_by_zero(self):
+        url = f"{BASE_URL}/calc/divide/1/0"
+        try:
+            response = urlopen(url, timeout=DEFAULT_TIMEOUT)
+            self.assertEqual(
+                response.status, http.client.BAD_REQUEST, 
+                f"Se esperaba BAD_REQUEST en {url}"
+            )
+        except Exception as e:
+            self.assertIn("400", str(e), f"Se esperaba error 400 en {url}")
+
+    def test_api_power(self):
+        url = f"{BASE_URL}/calc/power/2/3"
+        response = urlopen(url, timeout=DEFAULT_TIMEOUT)
+        self.assertEqual(
+            response.status, http.client.OK, f"Error en la petición API a {url}"
+        )
+        self.assertEqual(
+            response.read().decode(), "8", f"Resultado incorrecto en {url}"
+        )
+
+    def test_api_sqrt(self):
+        url = f"{BASE_URL}/calc/sqrt/16"
+        response = urlopen(url, timeout=DEFAULT_TIMEOUT)
+        self.assertEqual(
+            response.status, http.client.OK, f"Error en la petición API a {url}"
+        )
+        self.assertEqual(
+            response.read().decode(), "4.0", f"Resultado incorrecto en {url}"
+        )
+
+    def test_api_sqrt_negative(self):
+        url = f"{BASE_URL}/calc/sqrt/-4"
+        try:
+            response = urlopen(url, timeout=DEFAULT_TIMEOUT)
+            self.assertEqual(
+                response.status, http.client.BAD_REQUEST, 
+                f"Se esperaba BAD_REQUEST en {url}"
+            )
+        except Exception as e:
+            self.assertIn("400", str(e), f"Se esperaba error 400 en {url}")
+
+    def test_api_log10(self):
+        url = f"{BASE_URL}/calc/log10/100"
+        response = urlopen(url, timeout=DEFAULT_TIMEOUT)
+        self.assertEqual(
+            response.status, http.client.OK, f"Error en la petición API a {url}"
+        )
+        self.assertEqual(
+            response.read().decode(), "2.0", f"Resultado incorrecto en {url}"
+        )
+
+    def test_api_log10_zero(self):
+        url = f"{BASE_URL}/calc/log10/0"
+        try:
+            response = urlopen(url, timeout=DEFAULT_TIMEOUT)
+            self.assertEqual(
+                response.status, http.client.BAD_REQUEST, 
+                f"Se esperaba BAD_REQUEST en {url}"
+            )
+        except Exception as e:
+            self.assertIn("400", str(e), f"Se esperaba error 400 en {url}")
+
+    def test_api_log10_negative(self):
+        url = f"{BASE_URL}/calc/log10/-10"
+        try:
+            response = urlopen(url, timeout=DEFAULT_TIMEOUT)
+            self.assertEqual(
+                response.status, http.client.BAD_REQUEST, 
+                f"Se esperaba BAD_REQUEST en {url}"
+            )
+        except Exception as e:
+            self.assertIn("400", str(e), f"Se esperaba error 400 en {url}")
+
+    def test_api_add_invalid_param(self):
+        url = f"{BASE_URL}/calc/add/abc/2"
+        try:
+            response = urlopen(url, timeout=DEFAULT_TIMEOUT)
+            self.assertEqual(
+                response.status, http.client.BAD_REQUEST, 
+                f"Se esperaba BAD_REQUEST en {url}"
+            )
+        except Exception as e:
+            self.assertIn("400", str(e), f"Se esperaba error 400 en {url}")
+
+    def test_api_substract_invalid_param(self):
+        url = f"{BASE_URL}/calc/substract/5/xyz"
+        try:
+            response = urlopen(url, timeout=DEFAULT_TIMEOUT)
+            self.assertEqual(
+                response.status, http.client.BAD_REQUEST, 
+                f"Se esperaba BAD_REQUEST en {url}"
+            )
+        except Exception as e:
+            self.assertIn("400", str(e), f"Se esperaba error 400 en {url}")
